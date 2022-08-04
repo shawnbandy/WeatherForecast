@@ -1,13 +1,15 @@
 
 
 
-var weatherSearchBtn = $("#submitBtn");
+var weatherSearchBtn = document.getElementById("submitBtn")
+var citySearchInput =  document.getElementById("citySearch")
+var cityListEl = document.getElementById("cityList")
+var testingEl = document.getElementById("testing")
 
 
 
 
-
-weatherSearchBtn.on("click", searchFunction)
+weatherSearchBtn.addEventListener("click", searchFunction)
 
 function searchFunction(){
 
@@ -23,4 +25,6 @@ function searchFunction(){
             }
         });
 }
+
+
 
