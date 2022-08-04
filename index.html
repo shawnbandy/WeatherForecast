@@ -46,24 +46,76 @@
       </head>
 
       <header class="text-center bg-info">
-        <h1 class="display-4">Weather Report</h1>
+        <h1 class="display-3">Weather Report</h1>
       </header>
 
       
       <body>
 
-        <main id="container">
+        <main id="container" style="background-color: purple; height: 100vh;">
 
-          <section class="row ml-3 mr-3"> 
+          <section class="row ml-3 mr-3" style="background-color: pink; height: 100vh;"> 
               <div class="border h-100 w-25 text-center justify-content-center">
-                This will be for the weather search
-                <ul class="p-1">
+                <p>This will be for the weather search</p>
+
+                <form class="row p-0 m-0 align-content-center justify-content-center">
+                  <input type="search" class="form-control w-50 mr-2" id="citySearch" placeholder="Enter a City"></input>
+                  <button type="submit" class="btn btn-primary w-25">Submit</button>
+                </form>
+                
+                <ul id="cityList" class="p-1">
                   <li class="list-group-item">city 1</li>
                 </ul>
               </div>
 
-              <div class="border h-100 w-75 text-center">
-                This will be the weather display
+              <div class="h-100 w-75 text-center" style="border: solid red; height: 100vh; background-color:aqua">
+
+                <header class="display-4">This will be weather display</header>
+
+                <div class="mt-5" style="background-color: orange; height: 50%;">
+                  <h1>This will be text displaying city selected</h1>
+                  
+                  <p>forcasts go here</p>
+
+                  <section class="row w-100 m-0 mt-5" style="border: solid black; height: 100%;">
+
+                    <!--!these cards will be made in the script, with their text and other elements being assigned to the pulled information of the weather for the upcoming days-->
+                    <div class="card w-25">
+                      <img class="card-img-top" src="..." alt="Card image cap">
+                      <div class="card-body">
+                        <h5 class="card-title">Card title</h5>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                      </div>
+                    </div>
+                    <div class="card w-25">
+                      <img class="card-img-top" src="..." alt="Card image cap">
+                      <div class="card-body">
+                        <h5 class="card-title">Card title</h5>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                      </div>
+                    </div>
+                    <div class="card w-25">
+                      <img class="card-img-top" src="..." alt="Card image cap">
+                      <div class="card-body">
+                        <h5 class="card-title">Card title</h5>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                      </div>
+                    </div>
+                    <div class="card w-25">
+                      <img class="card-img-top" src="..." alt="Card image cap">
+                      <div class="card-body">
+                        <h5 class="card-title">Card title</h5>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                      </div>
+                    </div>
+
+                  <section>
+                </div>
+
               </div>
 
         </section>
