@@ -35,10 +35,33 @@ weatherSearchBtn.on("click", addCityToList);
 //         });
 // }
 
+
+
+// TODO: Add catch if input value in the search bar is null 
+// TODO: figure out the dataNumber, may not be necessary
+// TODO: add a reset button to clear local storage
+// TODO: Figure out the API and calling
+// TODO: today's weather should have the following: 
+    //*city name, date, icon of weather conditions, temperature, humidity, wind speed, UV index. UV index should have color that changes depending on the conditions
+// TODO: add cards to the display using API information, as well as changing the display text 
+// TODO: the 5 day forecast cards need to have the following:
+    //*date, icon of weather conditions, temperature, wind speed, humidity
+// TODO: make the list re-arrangeable 
+// TODO: 
+
+//* i serves as the index and gives each thing the data type
 var i = 0;
+if (localStorage.getItem("list") != null){
+    cityListEl.html(localStorage.getItem("list"));
+    i = localStorage.getItem("dataNumber");
+    console.log(i);
+}
+
+
+
 function addCityToList(e){
     e.preventDefault
-    var cityEntered = citySearchInput.val();
+    var cityEntered = citySearchInput.val(); //*add a catch to see if no input was put in here
 
     var newListEl = $("<li>");
     newListEl.text(cityEntered);
@@ -50,22 +73,17 @@ function addCityToList(e){
 
     cityListEl.append(newListEl);
 
-    localStorage.setItem("list", JSON.stringify(cityListEl)) //!This will have to be changed with the URL of whatever city it was that was searched
-    // console.log(cityEntered);
+    localStorage.setItem("list", cityListEl.html()) 
 
     i++;
-    console.log(JSON.parse(localStorage.getItem("list")));
     citySearchInput.val("");
-    localStorage.setItem("numberOfEntries", i);
-}
-
-function retrieveCities(e){
-    e.preventDefault;
-    if (localStorage.getItem("numberOfEntries" != null)){
-        cityListEl.val(JSON.parse(localStorage.getItem("list")))
-    }
+    localStorage.setItem("dataNumber", i);
 
 }
+
+
+
+
 
 
 
