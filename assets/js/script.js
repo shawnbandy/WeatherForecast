@@ -6,6 +6,8 @@ var weatherSearchBtn = $("#submitBtn");
 var citySearchInput =  $("#citySearch");
 var cityListEl = $("#cityList");
 var resetBtn = $("#resetBtn");
+var cityDisplay = $("#cityDisplay");
+var todayDate = $("#todayDate");
 
 //! My API key is 509e23105bc9e70fb5c519f8f743f99f
 
@@ -15,13 +17,20 @@ var resetBtn = $("#resetBtn");
 //?"https://api.openweathermap.org/data/3.0/onecall?lat={lat}&lon={lon}&exclude={part}&appid={API key}"
 //*^this is the main one
 
+"http://api.openweathermap.org/geo/1.0/direct?q={city name}%2C+US&limit=1&appid=509e23105bc9e70fb5c519f8f743f99f"
+
 // weatherSearchBtn.on("click", searchFunction)
 
+todayDate.text(moment().format("MMMM do, YYYY"))
+
 weatherSearchBtn.on("click", addCityToList);
+weatherSearchBtn.on("click", getGeoCoding);
 resetBtn.on("click", function(){
     localStorage.clear();
     location = location;
 });
+
+
 
 
 // function searchFunction(event){
@@ -72,6 +81,8 @@ function addCityToList(e){
         return;
     }
 
+    cityDisplay.text(cityEntered)
+
     var newListEl = $("<li>");
     newListEl.text(cityEntered);
     newListEl.addClass("list-group-item");
@@ -82,11 +93,38 @@ function addCityToList(e){
 
     cityListEl.append(newListEl);
 
+
+
+
+
     localStorage.setItem("list", cityListEl.html()) 
 
     i++;
     citySearchInput.val("");
     localStorage.setItem("dataNumber", i);
+
+    var cityEnteredLatLon = getGeoCoding(cityEntered);
+    console.log(cityEnteredLatLon)
+
+}
+
+function getGeoCoding(cityEntered){
+
+    var requestURL = "http://api.openweathermap.org/geo/1.0/direct?q=" + cityEntered + "%2C+US&limit=1&appid=509e23105bc9e70fb5c519f8f743f99f"
+    console.log(requestURL);
+    
+    fetch(requestURL)
+        .then(function(response){
+            return response.json();
+        })
+        .then(function(data){
+            for (var i = 0; i < data.length; i++){
+                console.log(data[i]);
+                var result = [data[i].lat, data[i].lon];
+                console.log(result);
+                return result;
+            }
+        });
 
 }
 
