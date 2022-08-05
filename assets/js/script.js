@@ -5,6 +5,7 @@
 var weatherSearchBtn = $("#submitBtn");
 var citySearchInput =  $("#citySearch");
 var cityListEl = $("#cityList");
+var resetBtn = $("#resetBtn");
 
 //! My API key is 509e23105bc9e70fb5c519f8f743f99f
 
@@ -17,6 +18,10 @@ var cityListEl = $("#cityList");
 // weatherSearchBtn.on("click", searchFunction)
 
 weatherSearchBtn.on("click", addCityToList);
+resetBtn.on("click", function(){
+    localStorage.clear();
+    location = location;
+});
 
 
 // function searchFunction(event){
@@ -37,9 +42,9 @@ weatherSearchBtn.on("click", addCityToList);
 
 
 
-// TODO: Add catch if input value in the search bar is null 
+// // TODO: Add catch if input value in the search bar is null 
 // TODO: figure out the dataNumber, may not be necessary
-// TODO: add a reset button to clear local storage
+// // TODO: add a reset button to clear local storage
 // TODO: Figure out the API and calling
 // TODO: today's weather should have the following: 
     //*city name, date, icon of weather conditions, temperature, humidity, wind speed, UV index. UV index should have color that changes depending on the conditions
@@ -58,10 +63,14 @@ if (localStorage.getItem("list") != null){
 }
 
 
-
 function addCityToList(e){
     e.preventDefault
-    var cityEntered = citySearchInput.val(); //*add a catch to see if no input was put in here
+    var cityEntered = citySearchInput.val().trim();
+    
+    if (cityEntered == null || cityEntered.length == 0){
+        console.log("null value detected")
+        return;
+    }
 
     var newListEl = $("<li>");
     newListEl.text(cityEntered);
