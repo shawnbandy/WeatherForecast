@@ -16,3 +16,7 @@ aside {
     height: 100vh;
 }
 
+#listButton:hover {
+    opacity: 90%;
+}
+

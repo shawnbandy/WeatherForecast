@@ -6,11 +6,18 @@ var weatherSearchBtn = $("#submitBtn");
 var citySearchInput =  $("#citySearch");
 var cityListEl = $("#cityList");
 
+//! My API key is 509e23105bc9e70fb5c519f8f743f99f
 
+//?http://api.openweathermap.org/geo/1.0/direct?q={city name},{state code},{country code}&limit={limit}&appid={API key}
+//*^this is geocoding to get the coordinates
 
+//?"https://api.openweathermap.org/data/3.0/onecall?lat={lat}&lon={lon}&exclude={part}&appid={API key}"
+//*^this is the main one
 
 // weatherSearchBtn.on("click", searchFunction)
+
 weatherSearchBtn.on("click", addCityToList);
+
 
 // function searchFunction(event){
 //     event.preventDefault;
@@ -36,14 +43,28 @@ function addCityToList(e){
     var newListEl = $("<li>");
     newListEl.text(cityEntered);
     newListEl.addClass("list-group-item");
-    newListEl.attr("data-number", i);
+    newListEl.attr({
+        id: "listButton",
+        type: "button",
+        "data-number": i});
 
     cityListEl.append(newListEl);
 
-    localStorage.setItem(dataType, i) //!This will have to be changed with the URL of whatever city it was that was searched
-    console.log(cityEntered);
+    localStorage.setItem("list", JSON.stringify(cityListEl)) //!This will have to be changed with the URL of whatever city it was that was searched
+    // console.log(cityEntered);
+
     i++;
+    console.log(JSON.parse(localStorage.getItem("list")));
     citySearchInput.val("");
+    localStorage.setItem("numberOfEntries", i);
+}
+
+function retrieveCities(e){
+    e.preventDefault;
+    if (localStorage.getItem("numberOfEntries" != null)){
+        cityListEl.val(JSON.parse(localStorage.getItem("list")))
+    }
+
 }
 
 
