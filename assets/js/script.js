@@ -23,32 +23,22 @@ var todayDate = $("#todayDate");
 
 todayDate.text(moment().format("MMMM do, YYYY"))
 
-weatherSearchBtn.on("click", addCityToList);
-weatherSearchBtn.on("click", getGeoCoding);
+// weatherSearchBtn.on("click", addCityToList);
+// weatherSearchBtn.on("click", getGeoCoding(cityEnteredHolder));
+
+weatherSearchBtn.on("click", masterClick);
+
 resetBtn.on("click", function(){
     localStorage.clear();
     location = location;
 });
 
-
-
-
-// function searchFunction(event){
-//     event.preventDefault;
-
-//     var requestURL = "https://api.openweathermap.org/data/3.0/onecall?lat={lat}&lon={lon}&exclude={part}&appid={API key}"
-
-//     fetch(requestURL)
-//         .then(function(response){
-//             return response.json;
-//         })
-//         .then(function(data){
-//             for (var i = 0; i < data.length; i++){
-//                 console.log(data[i]);
-//             }
-//         });
-// }
-
+function masterClick(event){
+    event.preventDefault;
+    addCityToList();
+    var latAndLon = getGeoCoding(cityEnteredHolder);
+    getCityWeather(latAndLon[0], latAndLon[1]);
+};
 
 
 // // TODO: Add catch if input value in the search bar is null 
@@ -64,6 +54,7 @@ resetBtn.on("click", function(){
 // TODO: 
 
 //* i serves as the index and gives each thing the data type
+//*this checks to see if there is any localstorage 
 var i = 0;
 if (localStorage.getItem("list") != null){
     cityListEl.html(localStorage.getItem("list"));
@@ -72,8 +63,10 @@ if (localStorage.getItem("list") != null){
 }
 
 
-function addCityToList(e){
-    e.preventDefault
+
+var cityEnteredHolder;
+//*this function will get the user city input, give it a set of classes/attributes, and then add it to the HTML doc
+function addCityToList(){
     var cityEntered = citySearchInput.val().trim();
     
     if (cityEntered == null || cityEntered.length == 0){
@@ -81,6 +74,7 @@ function addCityToList(e){
         return;
     }
 
+    cityEnteredHolder = cityEntered;
     cityDisplay.text(cityEntered)
 
     var newListEl = $("<li>");
@@ -93,21 +87,17 @@ function addCityToList(e){
 
     cityListEl.append(newListEl);
 
-
-
-
-
-    localStorage.setItem("list", cityListEl.html()) 
+    localStorage.setItem("list", cityListEl.html()); 
 
     i++;
     citySearchInput.val("");
     localStorage.setItem("dataNumber", i);
-
-    var cityEnteredLatLon = getGeoCoding(cityEntered);
-    console.log(cityEnteredLatLon)
-
 }
 
+
+
+//*this function gets the latitude and longitude of the city entered 
+var latLonResult;
 function getGeoCoding(cityEntered){
 
     var requestURL = "http://api.openweathermap.org/geo/1.0/direct?q=" + cityEntered + "%2C+US&limit=1&appid=509e23105bc9e70fb5c519f8f743f99f"
@@ -125,6 +115,15 @@ function getGeoCoding(cityEntered){
                 return result;
             }
         });
+
+}
+
+
+
+function getCityWeather(lat, lon){
+    console.log(latLonResult);
+
+    var requestURL = "https://api.openweathermap.org/data/3.0/onecall?lat=" + lat + "&lon=" + lon + "&appid=509e23105bc9e70fb5c519f8f743f99f"
 
 }
 
