@@ -39,7 +39,11 @@ weatherSearchBtn.on("click", function(event){
 $(document).on("click", "#listButton" ,function(event){
     event.preventDefault;
     console.log("btn clicked");
-    getGeoCoding(event.target.text())
+    localStorage.clear("weatherPage");
+    cityDisplay.text(event.target.innerText);
+    cardResults.html("");
+    currentWeather.html("");
+    getGeoCoding(event.target.innerText)
 })
 
 
