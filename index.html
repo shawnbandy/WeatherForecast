@@ -29,51 +29,41 @@
         <title>Weather Report</title>
       </head>
 
-      <header class="text-center align-content-center justify-content-center bg-info col">
+      <header class="text-center align-content-center justify-content-center col" style="background-color: #354259; color: #C2DED1;">
         <h1 class="display-3">Weather Report</h1>
       </header>
 
       
       <body>
 
-        <main id="container" style="background-color: purple; height: 100%;">
+        <main id="container">
 
           <section class="row ml-3 mr-3 h-100 col-12 w-100"> 
 
-              <aside class="border h-auto col-lg-3 col-sm-12 text-center justify-content-center" style="background-color: pink;">
-                <form class="row p-0 m-0 align-content-center justify-content-center">
+              <aside class="border h-auto col-lg-3 col-sm-12 text-center justify-content-center" style="background-color: #354259;">
+                <form class="row p-0 mt-3 align-content-center justify-content-center">
                   <input type="search" class="form-control w-50 mr-2" id="citySearch" placeholder="Enter a City"></input>
                   <button type="button" class="btn btn-primary w-25" id="submitBtn">Submit</button>
                 </form>
                 
                 <ul id="cityList" class="p-1">
-                  <li class="list-group-item">city 1</li>
                 </ul>
                 <button type="button" class="btn btn-danger w-50" id="resetBtn">Reset</button>
               </aside>
 
-              <div class="h-100 col-lg-9 col-sm-12 text-center align-content-center justify-content-center" style="border: solid red; background-color:aqua">
-                <header class="display-4" id="cityDisplay">test</header>
+              <div class="h-100 col-lg-9 col-sm-12 text-center align-content-center justify-content-center" style="">
+                <header class="display-4" id="cityDisplay" style="background-color: #CDC2AE;"></header>
 
-                <div class="h-auto" style="background-color: orange;">
+                <div class="h-auto" style="background-color: #CDC2AE;">
                     <h1 class="h1 pt-5" id="todayDate">This is the Date</h1>
                   <ul class="text-dark h2 mt-4 list-unstyled h-100" id="currentWeather">
-                    <li class="list-group-item-info col">UV Index</li> <!--!Make this text color change depending on the intensity-->
+                    <li class="list-group-item-info col"></li> <!--!Make this text color change depending on the intensity-->
                   </ul>
-                  <h1 class="display">Weekly Forecast</h1>
+                  <h1 id="weeklyForecast" class="display" style="display: none">Weekly Forecast</h1>
                 </div>
                 
                 <section id="cardResults" class="w-100 p-0 row m-0 h-auto" style="border: solid black;">
-                  
-                  <!--!these cards will be made in the script, with their text and other elements being assigned to the pulled information of the weather for the upcoming days-->
-                  <div class="card col-lg col-sm-12">
-                    <img class="card-img-top" alt="Card image cap">
-                    <div class="card-body">
-                      <h5 class="card-title">Card title</h5>
-                      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                      <a href="#" class="btn btn-primary">Go somewhere</a>
-                    </div>
-                  </div>
+
                 </section>
 
             </section>

@@ -124,14 +124,21 @@ function getCurrentCityWeather(latAndLonArray){
             console.log("current city weather: ")
             console.log(data)
 
-            dataArray = [data.weather[0].description, kelvinToFahrenheit(data.main.temp).toFixed(2), data.main.humidity, data.wind.speed]
+            dataArray = [
+                data.weather[0].icon, 
+                kelvinToFahrenheit(data.main.temp).toFixed(2), 
+                data.main.humidity, 
+                data.wind.speed
+            ]
 
             for (var i = 0; i < dataArray.length; i++){
                 var listEl = $("<li>");
                 listEl.addClass("col");
                 switch (i){
                     case 0:
-                        listEl.text(dataArray[0]);
+                        var image = $("<img>")
+                        image.attr("src", "http://openweathermap.org/img/wn/" + data.weather[0].icon + "@2x.png");
+                        listEl.append(image)
                         break;
                     case 1:
                         listEl.text("Temperature: " + dataArray[1] + "F");
@@ -170,9 +177,12 @@ function get5DayForecast(latAndLonArray){
 
             for (var i = 1; i < 6; i++){
                 var card = $("<div>");
-                    card.addClass("card col-lg col-sm-12");
+                    card.addClass("card col-lg col-sm-12 align-items-center");
+                    card.attr("style", "background-color: #C2DED1")
                 var cardImg = $("<img>");
                     cardImg.addClass("card-img-top");
+                    cardImg.attr("src", "http://openweathermap.org/img/wn/" + data.list[i].weather[0].icon + "@2x.png")
+                    cardImg.addClass("w-50 h-50")
                 var cardBody = $("<div>");
                     cardBody.addClass("card-body");
                 var cardTitle = $("<h5>");
@@ -199,8 +209,10 @@ function get5DayForecast(latAndLonArray){
     
                 }
 
-                cardBody.append(cardTitle)
-                cardBody.append(cardList)
+                
+                cardBody.append(cardTitle);
+                card.append(cardImg);
+                cardBody.append(cardList);
                 card.append(cardImg);
                 card.append(cardBody);
                 cardResults.append(card);
@@ -225,6 +237,7 @@ function getCurrentCityUV(latAndLonArray){
             console.log("--------------------------")
             console.log("UV data: ")
             console.log(data);
+            console.log(data.uvi)
 
         })
 
