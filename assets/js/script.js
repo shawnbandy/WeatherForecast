@@ -9,9 +9,9 @@
 
 
 // // TODO: Add catch if input value in the search bar is null 
-// TODO: figure out the dataNumber, may not be necessary
+// // TODO: figure out the dataNumber, may not be necessary
 // // TODO: add a reset button to clear local storage
-// TODO: Figure out the API and calling
+// // TODO: Figure out the API and calling
 // TODO: today's weather should have the following: 
     //*city name, date, icon of weather conditions, temperature, humidity, wind speed, UV index. UV index should have color that changes depending on the conditions
 // TODO: add cards to the display using API information, as well as changing the display text 
@@ -121,13 +121,31 @@ function getCurrentCityWeather(latAndLonArray){
         .then(function(data){
             console.log(data)
 
-            currentWeather.append($("<p>").text(data.weather[0].description)) //!this will need to be the icon
-            currentWeather.append($("<p>").text("Temperature: " + kelvinToFahrenheit(data.main.temp).toFixed(2) + " "));
-            currentWeather.append($("<p>").text("Humidity: " + data.main.humidity + " "));
-            currentWeather.append($("<p>").text("Wind speed: " + data.wind.speed + " "));
+            dataArray = [data.weather[0].description, kelvinToFahrenheit(data.main.temp).toFixed(2), data.main.humidity, data.wind.speed]
 
-            
+            for (var i = 0; i < dataArray.length; i++){
+                var listEl = $("<li>");
+                listEl.addClass("col");
+                switch (i){
+                    case 0:
+                        listEl.text(dataArray[0]);
+                        break;
+                    case 1:
+                        listEl.text("Temperature: " + dataArray[1]);
+                        break;
+                    case 2:
+                        listEl.text("Humidity: " + dataArray[2]);
+                        break;
+                    case 3:
+                        listEl.text("Wind speed: " + dataArray[3]);
+                        break
+                    default:
+                        break;
+                }
 
+                currentWeather.append(paragraph);
+
+            }
 
         })
 
