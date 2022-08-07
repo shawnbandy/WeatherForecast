@@ -15,7 +15,7 @@
 // TODO: today's weather should have the following: 
     //*city name, date, icon of weather conditions, temperature, humidity, wind speed, UV index. UV index should have color that changes depending on the conditions
 // TODO: add cards to the display using API information, as well as changing the display text 
-// TODO: the 5 day forecast cards need to have the following:
+// // TODO: the 5 day forecast cards need to have the following:
     //*date, icon of weather conditions, temperature, wind speed, humidity
 // TODO: make the list re-arrangeable 
 // TODO:
@@ -28,10 +28,11 @@ var resetBtn = $("#resetBtn");
 var cityDisplay = $("#cityDisplay");
 var todayDate = $("#todayDate");
 var currentWeather = $("#currentWeather");
+var cardResults = $("#cardResults");
 
 
 
-todayDate.text(moment().format("MMMM do, YYYY"));
+todayDate.text(moment().format("MMMM Do, YYYY"));
 
 weatherSearchBtn.on("click", function(event){
     event.preventDefault;
@@ -88,10 +89,10 @@ function addCityToList(){
 
 
 
-//*this function gets the latitude and longitude of the city entered 
+//*this function gets the latitude and longitude of the city entered, and then feeds that data into 3 more fetch requests that get the weather, UV, and forecast
 function getGeoCoding(cityEntered){
 
-    var geoCodingURL = "http://api.openweathermap.org/geo/1.0/direct?q=" + cityEntered + "%2C+US&limit=1&appid=509e23105bc9e70fb5c519f8f743f99f" 
+    var geoCodingURL = "http://api.openweathermap.org/geo/1.0/direct?q=" + cityEntered + "%2C+US&limit=1&appid=9ec76b58d98312c57d26f7da072dd28c" 
 
     fetch(geoCodingURL)
         .then(function(response){
@@ -101,16 +102,16 @@ function getGeoCoding(cityEntered){
             for (var i = 0; i < data.length; i++){
                 var result = [data[i].lat, data[i].lon];
             }
-            getCurrentCityWeather(result)
-            get5DayForecast(result)
+            getCurrentCityWeather(result);
+            getCurrentCityUV(result);
+            get5DayForecast(result);
         })
 
 };
 
 
-
+//*this function gets the current city's weather and then displays it on the HTML
 function getCurrentCityWeather(latAndLonArray){
-    console.log(latAndLonArray[0] + " " + latAndLonArray[1]);
 
     var requestURL = "https://api.openweathermap.org/data/2.5/weather?lat=" + latAndLonArray[0] + "&lon=" + latAndLonArray[1] + "&appid=509e23105bc9e70fb5c519f8f743f99f"
 
@@ -119,6 +120,8 @@ function getCurrentCityWeather(latAndLonArray){
             return response.json()
         })
         .then(function(data){
+            console.log("--------------------------")
+            console.log("current city weather: ")
             console.log(data)
 
             dataArray = [data.weather[0].description, kelvinToFahrenheit(data.main.temp).toFixed(2), data.main.humidity, data.wind.speed]
@@ -131,19 +134,19 @@ function getCurrentCityWeather(latAndLonArray){
                         listEl.text(dataArray[0]);
                         break;
                     case 1:
-                        listEl.text("Temperature: " + dataArray[1]);
+                        listEl.text("Temperature: " + dataArray[1] + "F");
                         break;
                     case 2:
-                        listEl.text("Humidity: " + dataArray[2]);
+                        listEl.text("Humidity: " + dataArray[2] + "%");
                         break;
                     case 3:
-                        listEl.text("Wind speed: " + dataArray[3]);
+                        listEl.text("Wind speed: " + dataArray[3] + "MPH");
                         break
                     default:
                         break;
                 }
 
-                currentWeather.append(paragraph);
+                currentWeather.append(listEl);
 
             }
 
@@ -151,10 +154,80 @@ function getCurrentCityWeather(latAndLonArray){
 
 }
 
+//*this function gets the 5 day forecast, and then puts it on the HTML in a card format 
 function get5DayForecast(latAndLonArray){
 
-    var fiveDayForecastURL = "api.openweathermap.org/data/2.5/forecast/daily?lat=" + latAndLonArray[0] + "&lon=" + latAndLonArray[1] + "&cnt=5&appid=509e23105bc9e70fb5c519f8f743f99f"
+    var fiveDayForecastURL = "https://api.openweathermap.org/data/2.5/forecast?lat=" + latAndLonArray[0] + "&lon=" + latAndLonArray[1] + "&appid=509e23105bc9e70fb5c519f8f743f99f";
+
+    fetch(fiveDayForecastURL)
+        .then(function(response){
+            return response.json();
+        })
+        .then(function(data){
+            console.log("--------------------------")
+            console.log("Five day forecast: ")
+            console.log(data)
+
+            for (var i = 1; i < 6; i++){
+                var card = $("<div>");
+                    card.addClass("card col-lg col-sm-12");
+                var cardImg = $("<img>");
+                    cardImg.addClass("card-img-top");
+                var cardBody = $("<div>");
+                    cardBody.addClass("card-body");
+                var cardTitle = $("<h5>");
+                    cardTitle.text(moment().add(i, 'days').format("MMM D"));
+                var cardList = $("<ul>");
+                    cardList.addClass("list-unstyled");
+                
+                for (var j = 0; j < 3; j++){
+                    var cardListItem = $("<li>");
+                    switch (j){
+                        case 0:
+                            cardListItem.text("Temperature: " + kelvinToFahrenheit(data.list[i].main.temp).toFixed(2) + "F");
+                            break;
+                        case 1:
+                            cardListItem.text("Humidity: " + data.list[i].main.humidity + "%");
+                            break;
+                        case 2:
+                            cardListItem.text("Wind speed: " + data.list[i].wind.speed + "MPH");
+                            break
+                        default:
+                            break;
+                    }
+                    cardList.append(cardListItem);
     
+                }
+
+                cardBody.append(cardTitle)
+                cardBody.append(cardList)
+                card.append(cardImg);
+                card.append(cardBody);
+                cardResults.append(card);
+                
+            }
+
+        })
+
+}
+
+//*this function gets the UV, and then puts it on the current weather forecast
+//!this does not work as my API key does not have access to the 3.0 API since I do not pay for their subscription
+function getCurrentCityUV(latAndLonArray){
+
+    var UVrequestURL = "https://api.openweathermap.org/data/3.0/onecall?lat=" + latAndLonArray[0] + "&lon=" + latAndLonArray[1] + "&appid=509e23105bc9e70fb5c519f8f743f99f";
+
+    fetch(UVrequestURL)
+        .then(function(response){
+            return response.json();
+        })
+        .then(function(data){
+            console.log("--------------------------")
+            console.log("UV data: ")
+            console.log(data);
+
+        })
+
 
 }
 
