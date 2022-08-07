@@ -29,6 +29,9 @@ todayDate.text(moment().format("MMMM Do, YYYY"));
 
 weatherSearchBtn.on("click", function(event){
     event.preventDefault;
+    localStorage.clear("weatherPage");
+    cardResults.html("");
+    currentWeather.html("");
     addCityToList();
     getGeoCoding(cityEnteredHolder);
 });
