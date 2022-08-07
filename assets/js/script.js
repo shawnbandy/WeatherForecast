@@ -1,24 +1,18 @@
-//! IMPORTANT:: have to have user input change the API call. For openweathermap.org, you have to use the geocoding API
-//! The geocoding API will give you the lat and lon needed to call the weather data
 
 //? My API key is 509e23105bc9e70fb5c519f8f743f99f
-//?http://api.openweathermap.org/geo/1.0/direct?q={city name},{state code},{country code}&limit={limit}&appid={API key}
-//*^this is geocoding to get the coordinates
-//?"https://api.openweathermap.org/data/3.0/onecall?lat={lat}&lon={lon}&exclude={part}&appid={API key}"
-//*^this is the main one
 
 
 // // TODO: Add catch if input value in the search bar is null 
 // // TODO: figure out the dataNumber, may not be necessary
 // // TODO: add a reset button to clear local storage
 // // TODO: Figure out the API and calling
-// TODO: today's weather should have the following: 
-    //*city name, date, icon of weather conditions, temperature, humidity, wind speed, UV index. UV index should have color that changes depending on the conditions
-// TODO: add cards to the display using API information, as well as changing the display text 
+// // TODO: today's weather should have the following: 
+    // // *city name, date, icon of weather conditions, temperature, humidity, wind speed, UV index. UV index should have color that changes depending on the conditions
+// // TODO: add cards to the display using API information, as well as changing the display text 
 // // TODO: the 5 day forecast cards need to have the following:
-    //*date, icon of weather conditions, temperature, wind speed, humidity
+    // // *date, icon of weather conditions, temperature, wind speed, humidity
 // TODO: make the list re-arrangeable 
-// TODO:
+// TODO: make everything save to localstorage
 
 
 var weatherSearchBtn = $("#submitBtn");
@@ -29,8 +23,7 @@ var cityDisplay = $("#cityDisplay");
 var todayDate = $("#todayDate");
 var currentWeather = $("#currentWeather");
 var cardResults = $("#cardResults");
-
-
+var weatherPage = $("#weatherPage");
 
 todayDate.text(moment().format("MMMM Do, YYYY"));
 
@@ -39,6 +32,12 @@ weatherSearchBtn.on("click", function(event){
     addCityToList();
     getGeoCoding(cityEnteredHolder);
 });
+
+$(document).on("click", "#listButton" ,function(event){
+    event.preventDefault;
+    console.log("btn clicked");
+    getGeoCoding(event.target.text())
+})
 
 
 resetBtn.on("click", function(){
@@ -52,8 +51,14 @@ resetBtn.on("click", function(){
 var i = 0;
 if (localStorage.getItem("list") != null){
     cityListEl.html(localStorage.getItem("list"));
+    weatherPage.html(localStorage.getItem("weatherPage"));
     i = localStorage.getItem("dataNumber");
     console.log(i);
+}
+
+if (localStorage.getItem("weatherPage") != null){
+    console.log("weather page is not null");
+    console.log(localStorage.getItem("weatherPage"))
 }
 
 
@@ -164,6 +169,8 @@ function getCurrentCityWeather(latAndLonArray){
 //*this function gets the 5 day forecast, and then puts it on the HTML in a card format 
 function get5DayForecast(latAndLonArray){
 
+    $("#weeklyForecast").attr("style", "display");
+
     var fiveDayForecastURL = "https://api.openweathermap.org/data/2.5/forecast?lat=" + latAndLonArray[0] + "&lon=" + latAndLonArray[1] + "&appid=509e23105bc9e70fb5c519f8f743f99f";
 
     fetch(fiveDayForecastURL)
@@ -174,8 +181,10 @@ function get5DayForecast(latAndLonArray){
             console.log("--------------------------")
             console.log("Five day forecast: ")
             console.log(data)
+           
+            var day = 1;
+            for (var i = 5; i < 40; i+=8){
 
-            for (var i = 1; i < 6; i++){
                 var card = $("<div>");
                     card.addClass("card col-lg col-sm-12 align-items-center");
                     card.attr("style", "background-color: #C2DED1")
@@ -186,9 +195,12 @@ function get5DayForecast(latAndLonArray){
                 var cardBody = $("<div>");
                     cardBody.addClass("card-body");
                 var cardTitle = $("<h5>");
-                    cardTitle.text(moment().add(i, 'days').format("MMM D"));
+                    cardTitle.text(moment().add(day, 'days').format("MMM D"));
+                    day +=1;
                 var cardList = $("<ul>");
                     cardList.addClass("list-unstyled");
+
+                
                 
                 for (var j = 0; j < 3; j++){
                     var cardListItem = $("<li>");
@@ -216,11 +228,12 @@ function get5DayForecast(latAndLonArray){
                 card.append(cardImg);
                 card.append(cardBody);
                 cardResults.append(card);
-                
+
+
             }
-
+            
+            localStorage.setItem("weatherPage", weatherPage.html());
         })
-
 }
 
 //*this function gets the UV, and then puts it on the current weather forecast
@@ -238,7 +251,6 @@ function getCurrentCityUV(latAndLonArray){
             console.log("UV data: ")
             console.log(data);
             console.log(data.uvi)
-
         })
 
 

@@ -51,10 +51,10 @@
                 <button type="button" class="btn btn-danger w-50" id="resetBtn">Reset</button>
               </aside>
 
-              <div class="h-100 col-lg-9 col-sm-12 text-center align-content-center justify-content-center" style="">
+              <div id="weatherPage" class="h-100 col-lg-9 col-sm-12 text-center align-content-center justify-content-center">
                 <header class="display-4" id="cityDisplay" style="background-color: #CDC2AE;"></header>
 
-                <div class="h-auto" style="background-color: #CDC2AE;">
+                <div class="h-auto" style="background-color: #CDC2AE;"> <!--!This needs to reset on btn press-->
                     <h1 class="h1 pt-5" id="todayDate">This is the Date</h1>
                   <ul class="text-dark h2 mt-4 list-unstyled h-100" id="currentWeather">
                     <li class="list-group-item-info col"></li> <!--!Make this text color change depending on the intensity-->
@@ -62,9 +62,8 @@
                   <h1 id="weeklyForecast" class="display" style="display: none">Weekly Forecast</h1>
                 </div>
                 
-                <section id="cardResults" class="w-100 p-0 row m-0 h-auto" style="border: solid black;">
-
-                </section>
+                <section id="cardResults" class="w-100 p-0 row m-0 h-auto" style="border: solid black;"></section> <!--!This needs to reset on btn press-->
+              </div>
 
             </section>
                 
