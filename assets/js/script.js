@@ -12,7 +12,7 @@
 // // TODO: the 5 day forecast cards need to have the following:
     // // *date, icon of weather conditions, temperature, wind speed, humidity
 // TODO: make the list re-arrangeable 
-// TODO: make everything save to localstorage
+// // TODO: make everything save to localstorage
 
 
 var weatherSearchBtn = $("#submitBtn");
@@ -114,6 +114,8 @@ function getGeoCoding(cityEntered){
             for (var i = 0; i < data.length; i++){
                 var result = [data[i].lat, data[i].lon];
             }
+            console.log("geocoding DATA")
+            console.log(data)
             getCurrentCityWeather(result);
             getCurrentCityUV(result);
             get5DayForecast(result);
