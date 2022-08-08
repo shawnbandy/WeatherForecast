@@ -68,6 +68,12 @@ if (localStorage.getItem("weatherPage") != null){
 }
 
 var cityArray = [];
+if (localStorage.getItem("cityArray") != null){
+    console.log((localStorage.getItem("cityArray")))
+    cityArray.push((localStorage.getItem("cityArray")))
+    console.log(cityArray);
+    console.log(localStorage.getItem("cityArray"))
+}
 var cityEnteredHolder;
 //*this function will get the user city input, give it a set of classes/attributes, and then add it to the HTML doc
 function addCityToList(){
@@ -103,6 +109,7 @@ function addCityToList(){
     i++;
     citySearchInput.val("");
     localStorage.setItem("dataNumber", i);
+    localStorage.setItem("cityArray", JSON.stringify(cityArray));
 }
 
 //*this function gets the latitude and longitude of the city entered, and then feeds that data into 3 more fetch requests that get the weather, UV, and forecast
