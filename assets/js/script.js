@@ -20,6 +20,7 @@ var citySearchInput =  $("#citySearch");
 var cityListEl = $("#cityList");
 var resetBtn = $("#resetBtn");
 var cityDisplay = $("#cityDisplay");
+var stateDisplay = $("#stateDisplay");
 var todayDate = $("#todayDate");
 var currentWeather = $("#currentWeather");
 var cardResults = $("#cardResults");
@@ -60,15 +61,13 @@ if (localStorage.getItem("list") != null){
     cityListEl.html(localStorage.getItem("list"));
     weatherPage.html(localStorage.getItem("weatherPage"));
     i = localStorage.getItem("dataNumber");
-    console.log(i);
 }
 
 if (localStorage.getItem("weatherPage") != null){
-    console.log("weather page is not null");
-    console.log(localStorage.getItem("weatherPage"))
+    console.log("previous weather page is exists");
 }
 
-
+var cityArray = [];
 var cityEnteredHolder;
 //*this function will get the user city input, give it a set of classes/attributes, and then add it to the HTML doc
 function addCityToList(){
@@ -78,9 +77,15 @@ function addCityToList(){
         console.log("null value detected")
         return;
     }
-
     cityEnteredHolder = cityEntered;
     cityDisplay.text(cityEntered)
+
+    for (var i = 0; i < cityArray.length; i ++){
+        if (cityEntered.toLowerCase() === cityArray[i].toLowerCase()){
+            return;
+        }
+    }
+    cityArray.push(cityEntered);
 
     var newListEl = $("<li>");
     newListEl.text(cityEntered);
@@ -88,8 +93,9 @@ function addCityToList(){
     newListEl.attr({
         id: "listButton",
         type: "button",
-        "data-number": i});
-
+        "data-number": i
+    });
+    
     cityListEl.append(newListEl);
 
     localStorage.setItem("list", cityListEl.html()); 
@@ -98,8 +104,6 @@ function addCityToList(){
     citySearchInput.val("");
     localStorage.setItem("dataNumber", i);
 }
-
-
 
 //*this function gets the latitude and longitude of the city entered, and then feeds that data into 3 more fetch requests that get the weather, UV, and forecast
 function getGeoCoding(cityEntered){
@@ -114,8 +118,8 @@ function getGeoCoding(cityEntered){
             for (var i = 0; i < data.length; i++){
                 var result = [data[i].lat, data[i].lon];
             }
-            console.log("geocoding DATA")
-            console.log(data)
+            console.log("geocoding DATA");
+            console.log(data);
             getCurrentCityWeather(result);
             getCurrentCityUV(result);
             get5DayForecast(result);
@@ -269,8 +273,63 @@ function kelvinToFahrenheit(kelvin){
     return (9/5) * (kelvin - 273) + 32
 }
 
-
-
+//*if I have time I'll try to work on this
+// $(function(){
+//     var selection = [
+//         "Montgomery",
+//         "Juneau",
+//         "Phoenix",
+//         "Little Rock",
+//         "Sacramento",
+//         "Denver",
+//         "Hartford",
+//         "Dover",
+//         "Tallahassee",
+//         "Atlanta",
+//         "Honolulu",
+//         "Boise",
+//         "Springfield",
+//         "Indianapolis",
+//         "Des Moines",
+//         "Topeka",
+//         "Frankfort",
+//         "Baton Rouge",
+//         "Augusta",
+//         "Annapolis",
+//         "Boston",
+//         "Lansing",
+//         "St. Paul",
+//         "Jackson",
+//         "Jefferson City",
+//         "Helena",
+//         "Washington D.C.",
+//         "Lincoln",
+//         "Carson City",
+//         "Concord",
+//         "Trenton",
+//         "Santa Fe",
+//         "Albany",
+//         "Raleigh",
+//         "Bismarck",
+//         "Columbus",
+//         "Oklahoma City",
+//         "Salem",
+//         "Harrisburg",
+//         "Providence",
+//         "Columbia",
+//         "Pierre",
+//         "Nashville",
+//         "Austin",
+//         "Salt Lake City",
+//         "Montpelier",
+//         "Richmond",
+//         "Olympia",
+//         "Charleston",
+//         "Madison",
+//         "Cheyenne"
+//     ];
+//     $("#citySearch").autocomplete({source: selection});
+// });
 
 
 

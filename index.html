@@ -42,7 +42,7 @@
 
               <aside class="border h-auto col-lg-3 col-sm-12 text-center justify-content-center" style="background-color: #354259;">
                 <form class="row p-0 mt-3 align-content-center justify-content-center">
-                  <input type="search" class="form-control w-50 mr-2" id="citySearch" placeholder="Enter a City"></input>
+                  <input type="text" class="form-control w-50 mr-2" id="citySearch" placeholder="Enter a City"></input>
                   <button type="button" class="btn btn-primary w-25" id="submitBtn">Submit</button>
                 </form>
                 
@@ -52,7 +52,10 @@
               </aside>
 
               <div id="weatherPage" class="h-100 col-lg-9 col-sm-12 text-center align-content-center justify-content-center">
-                <header class="display-4" id="cityDisplay" style="background-color: #CDC2AE;"></header>
+                <header class="display-4" id="cityDisplay" style="background-color: #CDC2AE;">
+                  <h3 id="stateDisplay"></h3>
+                </header>
+                
 
                 <div class="h-auto" style="background-color: #CDC2AE;">
                     <h1 class="h1 pt-5" id="todayDate">This is the Date</h1>
@@ -73,7 +76,6 @@
 
         
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
         <script src="assets/js/script.js"></script>
 
       </body>
