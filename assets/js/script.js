@@ -28,6 +28,11 @@ var weatherPage = $("#weatherPage");
 
 todayDate.text(moment().format("MMMM Do, YYYY"));
 
+//*disables hitting enter inside the form because it somehow refreshes the page.
+$("form").keydown(function(event){
+    return event.keyCode != 13;
+})
+
 weatherSearchBtn.on("click", function(event){
     event.preventDefault;
     localStorage.clear("weatherPage");
@@ -68,12 +73,6 @@ if (localStorage.getItem("weatherPage") != null){
 }
 
 var cityArray = [];
-if (localStorage.getItem("cityArray") != null){
-    console.log((localStorage.getItem("cityArray")))
-    cityArray.push((localStorage.getItem("cityArray")))
-    console.log(cityArray);
-    console.log(localStorage.getItem("cityArray"))
-}
 var cityEnteredHolder;
 //*this function will get the user city input, give it a set of classes/attributes, and then add it to the HTML doc
 function addCityToList(){
@@ -109,7 +108,6 @@ function addCityToList(){
     i++;
     citySearchInput.val("");
     localStorage.setItem("dataNumber", i);
-    localStorage.setItem("cityArray", JSON.stringify(cityArray));
 }
 
 //*this function gets the latitude and longitude of the city entered, and then feeds that data into 3 more fetch requests that get the weather, UV, and forecast
@@ -120,17 +118,26 @@ function getGeoCoding(cityEntered){
     fetch(geoCodingURL)
         .then(function(response){
             return response.json()
+            
         })
         .then(function(data){
+
+            if (data[0] == null){
+                alert("This is not a US city.");
+            }
+
             for (var i = 0; i < data.length; i++){
                 var result = [data[i].lat, data[i].lon];
+                var state = data[i].state;
             }
             console.log("geocoding DATA");
             console.log(data);
+            stateDisplay.text(state);
             getCurrentCityWeather(result);
             getCurrentCityUV(result);
             get5DayForecast(result);
-        })
+            }   
+        )
 
 };
 
