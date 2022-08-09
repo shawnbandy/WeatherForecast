@@ -14,6 +14,36 @@
 // TODO: make the list re-arrangeable 
 // // TODO: make everything save to localstorage
 
+// TODO: Fix bug where the list buttons don't work on refresh
+// // TODO: fix bug where the city list won't appear off of localstorage
+// // TODO: fix bug where off of refresh, the weather page won't update
+
+
+    $(window).on("load", function(){
+        if (localStorage.getItem("list") != null){
+            console.log("list is not null");
+            console.log(localStorage.getItem("list"));
+            cityListEl.html(localStorage.getItem("list"));
+            cityDisplay.text(localStorage.getItem("cityName"));
+        }else{
+            console.log("null")
+        }
+        
+        if (localStorage.getItem("weatherPage") != null){
+            console.log("previous weather page is exists");
+            cardResults.empty();
+            currentWeather.empty();
+            cityDisplay.text(localStorage.getItem("cityName"));
+            getGeoCoding(localStorage.getItem("weatherPage"));
+        }
+    })
+
+
+    
+
+
+
+
 
 var weatherSearchBtn = $("#submitBtn");
 var citySearchInput =  $("#citySearch");
@@ -34,28 +64,45 @@ $("form").keydown(function(event){
     return event.keyCode != 13;
 })
 
+
+
+
 weatherSearchBtn.on("click", function(event){
+    console.log("pressed");
     event.preventDefault;
+    
     localStorage.clear("weatherPage");
 
-    cardResults.html("");
-    currentWeather.html("");
+    cardResults.empty();
+    currentWeather.empty();
+
     addCityToList();
+    localStorage.setItem("weatherPage", cityEnteredHolder);
+    localStorage.setItem("cityName", cityEnteredHolder);
     getGeoCoding(cityEnteredHolder);
+
+    localStorage.setItem("list", cityListEl.html()); 
 });
 
 $(document).on("click", "#listButton" ,function(event){
     event.preventDefault;
+
     console.log("btn clicked");
+
     localStorage.clear("weatherPage");
 
     cityDisplay.text(event.target.innerText);
+    console.log(event.target.innerText);
 
-    cardResults.html("");
+    cardResults.empty();
+    currentWeather.empty();
 
-    currentWeather.html("");
+    localStorage.setItem("weatherPage", event.target.innerText);
+    localStorage.setItem("cityName", event.target.innerText);
 
     getGeoCoding(event.target.innerText);
+
+    localStorage.setItem("list", cityListEl.html()); 
 
 })
 
@@ -63,25 +110,25 @@ $(document).on("click", "#listButton" ,function(event){
 
 resetBtn.on("click", function(){
     localStorage.clear();
-    location = location;
+    location.reload(true)
 });
 
 
 //* i serves as the index and gives each thing the data type
 //*this checks to see if there is any localstorage 
 var i = 0;
-if (localStorage.getItem("list") != null){
-    console.log("list is not null");
-    console.log(localStorage.getItem("list"));
-    cityListEl.html(localStorage.getItem("list"));
-    i = localStorage.getItem("dataNumber");
-}
+// if (localStorage.getItem("list") != null){
+//     console.log("list is not null");
+//     console.log(localStorage.getItem("list"));
+//     cityListEl.html(localStorage.getItem("list"));
+// }else{
+//     console.log("null")
+// }
 
-if (localStorage.getItem("weatherPage") != null){
-    console.log("previous weather page is exists");
-    weatherPage.html(localStorage.getItem("weatherPage"));
-    console.log(localStorage.getItem("weatherPage"))
-}
+// if (localStorage.getItem("weatherPage") != null){
+//     console.log("previous weather page is exists");
+//     weatherPage.html(localStorage.getItem("weatherPage"));
+// }
 
 var cityArray = [];
 var cityEnteredHolder;
@@ -108,16 +155,13 @@ function addCityToList(){
     newListEl.attr({
         id: "listButton",
         type: "button",
-        "data-number": i
     });
     
     cityListEl.append(newListEl);
 
-    localStorage.setItem("list", cityListEl.html()); 
-
     i++;
     citySearchInput.val("");
-    localStorage.setItem("dataNumber", i);
+
 }
 
 //*this function gets the latitude and longitude of the city entered, and then feeds that data into 3 more fetch requests that get the weather, UV, and forecast
@@ -160,7 +204,6 @@ function getCurrentCityWeather(latAndLonArray){
             return response.json()
         })
         .then(function(data){
-
 
             //*
             dataArray = [
@@ -264,7 +307,7 @@ function get5DayForecast(latAndLonArray){
 
             }
             
-            localStorage.setItem("weatherPage", weatherPage.html());
+
         })
 }
 
@@ -280,9 +323,11 @@ function getCurrentCityUV(latAndLonArray){
         })
         .then(function(data){
 
+            console.log("this was hit");
+            console.log(UVrequestURL);
 
             var uvSpan = $("<span>")
-                uvSpan.attr("style", "width: 10%;")
+                uvSpan.attr("style", "width: 10%; color: white;")
             var unListEl = $("<li>");
             unListEl.addClass("col");
                 uvSpan.text(data.current.uvi);
@@ -363,7 +408,4 @@ function kelvinToFahrenheit(kelvin){
 //     ];
 //     $("#citySearch").autocomplete({source: selection});
 // });
-
-
-
 
