@@ -130,7 +130,13 @@ var i = 0;
 //     weatherPage.html(localStorage.getItem("weatherPage"));
 // }
 
+
 var cityArray = [];
+if (localStorage.getItem("cityArray") != null){
+    var cityArray = JSON.parse(localStorage.getItem("cityArray"));
+    console.log(cityArray);
+}
+
 var cityEnteredHolder;
 //*this function will get the user city input, give it a set of classes/attributes, and then add it to the HTML doc
 function addCityToList(){
@@ -141,13 +147,14 @@ function addCityToList(){
         return;
     }
     cityEnteredHolder = cityEntered;
-    cityDisplay.text(cityEntered)
+    cityDisplay.text(cityEntered);
 
     for (var i = 0; i < cityArray.length; i ++){
         if (cityEntered.toLowerCase() === cityArray[i].toLowerCase()){
             return;
         }
     }
+    cityArray.push(cityEntered);
 
     var newListEl = $("<li>");
     newListEl.text(cityEntered);
@@ -161,6 +168,8 @@ function addCityToList(){
 
     i++;
     citySearchInput.val("");
+    localStorage.setItem("cityArray", JSON.stringify(cityArray));
+    console.log(cityArray);
 
 }
 
