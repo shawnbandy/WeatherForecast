@@ -25,6 +25,7 @@ var todayDate = $("#todayDate");
 var currentWeather = $("#currentWeather");
 var cardResults = $("#cardResults");
 var weatherPage = $("#weatherPage");
+var listButton = $("#listButton");
 
 todayDate.text(moment().format("MMMM Do, YYYY"));
 
@@ -36,6 +37,7 @@ $("form").keydown(function(event){
 weatherSearchBtn.on("click", function(event){
     event.preventDefault;
     localStorage.clear("weatherPage");
+
     cardResults.html("");
     currentWeather.html("");
     addCityToList();
@@ -46,11 +48,17 @@ $(document).on("click", "#listButton" ,function(event){
     event.preventDefault;
     console.log("btn clicked");
     localStorage.clear("weatherPage");
+
     cityDisplay.text(event.target.innerText);
+
     cardResults.html("");
+
     currentWeather.html("");
-    getGeoCoding(event.target.innerText)
+
+    getGeoCoding(event.target.innerText);
+
 })
+
 
 
 resetBtn.on("click", function(){
@@ -63,13 +71,16 @@ resetBtn.on("click", function(){
 //*this checks to see if there is any localstorage 
 var i = 0;
 if (localStorage.getItem("list") != null){
+    console.log("list is not null");
+    console.log(localStorage.getItem("list"));
     cityListEl.html(localStorage.getItem("list"));
-    weatherPage.html(localStorage.getItem("weatherPage"));
     i = localStorage.getItem("dataNumber");
 }
 
 if (localStorage.getItem("weatherPage") != null){
     console.log("previous weather page is exists");
+    weatherPage.html(localStorage.getItem("weatherPage"));
+    console.log(localStorage.getItem("weatherPage"))
 }
 
 var cityArray = [];
@@ -90,7 +101,6 @@ function addCityToList(){
             return;
         }
     }
-    cityArray.push(cityEntered);
 
     var newListEl = $("<li>");
     newListEl.text(cityEntered);
@@ -121,7 +131,7 @@ function getGeoCoding(cityEntered){
             
         })
         .then(function(data){
-
+            //*gets the lat/lon and then pushes those values into the other API fetch requests
             if (data[0] == null){
                 alert("This is not a US city.");
             }
@@ -130,8 +140,6 @@ function getGeoCoding(cityEntered){
                 var result = [data[i].lat, data[i].lon];
                 var state = data[i].state;
             }
-            console.log("geocoding DATA");
-            console.log(data);
             stateDisplay.text(state);
             getCurrentCityWeather(result);
             getCurrentCityUV(result);
@@ -152,10 +160,9 @@ function getCurrentCityWeather(latAndLonArray){
             return response.json()
         })
         .then(function(data){
-            console.log("--------------------------")
-            console.log("current city weather: ")
-            console.log(data)
 
+
+            //*
             dataArray = [
                 data.weather[0].icon, 
                 kelvinToFahrenheit(data.main.temp).toFixed(2), 
@@ -205,9 +212,7 @@ function get5DayForecast(latAndLonArray){
             return response.json();
         })
         .then(function(data){
-            console.log("--------------------------")
-            console.log("Five day forecast: ")
-            console.log(data)
+
            
             var day = 1;
             for (var i = 5; i < 40; i+=8){
@@ -264,22 +269,36 @@ function get5DayForecast(latAndLonArray){
 }
 
 //*this function gets the UV, and then puts it on the current weather forecast
-//!this does not work as my API key does not have access to the 3.0 API since I do not pay for their subscription
+//*this only works by making it data/2.5 and not data/3.0
 function getCurrentCityUV(latAndLonArray){
 
-    var UVrequestURL = "https://api.openweathermap.org/data/3.0/onecall?lat=" + latAndLonArray[0] + "&lon=" + latAndLonArray[1] + "&appid=509e23105bc9e70fb5c519f8f743f99f";
+    var UVrequestURL = "https://api.openweathermap.org/data/2.5/onecall?lat=" + latAndLonArray[0] + "&lon=" + latAndLonArray[1] + "&appid=509e23105bc9e70fb5c519f8f743f99f";
 
     fetch(UVrequestURL)
         .then(function(response){
             return response.json();
         })
         .then(function(data){
-            console.log("--------------------------")
-            console.log("UV data: ")
-            console.log(data);
-            console.log(data.uvi)
-        })
 
+
+            var uvSpan = $("<span>")
+                uvSpan.attr("style", "width: 10%;")
+            var unListEl = $("<li>");
+            unListEl.addClass("col");
+                uvSpan.text(data.current.uvi);
+                    if (data.current.uvi < 2.1){
+                        uvSpan.attr("style", "background-color: green;")
+                    }else if (data.current.uvi < 8 && data.current.uvi > 2.1){
+                        uvSpan.attr("style", "background-color: orange;")
+                    }else if (data.current.uvi > 8){
+                        uvSpan.attr("style", "background-color: red;")
+                    }
+
+
+            unListEl.append(uvSpan);
+            currentWeather.append(unListEl);
+        })
+        
 
 }
 
