@@ -119,6 +119,7 @@ resetBtn.on("click", function(){
 var cityArray = [];
 if (localStorage.getItem("cityArray") != null){
     var cityArray = JSON.parse(localStorage.getItem("cityArray"));
+    console.log("city array after LS")
     console.log(cityArray);
 }
 
@@ -130,6 +131,12 @@ function addCityToList(){
     if (cityEntered == null || cityEntered.length == 0){
         console.log("null value detected")
         return;
+    }
+    for (var i = 0; i < specialCharsAndNums.split("").length; i++){
+        if (cityEntered.includes(specialCharsAndNums[i])){
+            console.log("non-alphabetical letter detected");
+            return;
+        }
     }
     cityEnteredHolder = cityEntered;
     cityDisplay.text(cityEntered);
@@ -401,4 +408,8 @@ function kelvinToFahrenheit(kelvin){
 //     ];
 //     $("#citySearch").autocomplete({source: selection});
 // });
+
+
+var specialCharsAndNums = "1234567890-=[],./~!@#$%^&*()_+{}|:<>?";
+
 
