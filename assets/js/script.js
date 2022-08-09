@@ -322,7 +322,7 @@ function getCurrentCityUV(latAndLonArray){
                 uvSpan.attr("style", "width: 10%;")
             var unListEl = $("<li>");
             unListEl.addClass("col text-light");
-                uvSpan.text(data.current.uvi);
+                uvSpan.text("UV: " +data.current.uvi);
                     if (data.current.uvi < 2.1){
                         uvSpan.attr("style", "background-color: green;")
                     }else if (data.current.uvi < 8 && data.current.uvi > 2.1){
