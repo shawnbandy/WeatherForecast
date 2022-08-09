@@ -14,11 +14,12 @@
 // TODO: make the list re-arrangeable 
 // // TODO: make everything save to localstorage
 
-// TODO: Fix bug where the list buttons don't work on refresh
+// // TODO: Fix bug where the list buttons don't work on refresh
 // // TODO: fix bug where the city list won't appear off of localstorage
 // // TODO: fix bug where off of refresh, the weather page won't update
 
 
+//*on window load, sets the list and the weather page to last entry
     $(window).on("load", function(){
         if (localStorage.getItem("list") != null){
             console.log("list is not null");
@@ -66,7 +67,7 @@ $("form").keydown(function(event){
 
 
 
-
+//*on button click, clears the current weather page and cards, adds city to the list, and then sets all of the weather information to city entered
 weatherSearchBtn.on("click", function(event){
     console.log("pressed");
     event.preventDefault;
@@ -84,6 +85,7 @@ weatherSearchBtn.on("click", function(event){
     localStorage.setItem("list", cityListEl.html()); 
 });
 
+//*same feature as above, but works for the list buttons
 $(document).on("click", "#listButton" ,function(event){
     event.preventDefault;
 
@@ -107,30 +109,13 @@ $(document).on("click", "#listButton" ,function(event){
 })
 
 
-
+//*resets local storage
 resetBtn.on("click", function(){
     localStorage.clear();
     location.reload(true)
 });
 
-
-//* i serves as the index and gives each thing the data type
-//*this checks to see if there is any localstorage 
-var i = 0;
-// if (localStorage.getItem("list") != null){
-//     console.log("list is not null");
-//     console.log(localStorage.getItem("list"));
-//     cityListEl.html(localStorage.getItem("list"));
-// }else{
-//     console.log("null")
-// }
-
-// if (localStorage.getItem("weatherPage") != null){
-//     console.log("previous weather page is exists");
-//     weatherPage.html(localStorage.getItem("weatherPage"));
-// }
-
-
+//*array of all cities that are on the list
 var cityArray = [];
 if (localStorage.getItem("cityArray") != null){
     var cityArray = JSON.parse(localStorage.getItem("cityArray"));
@@ -166,7 +151,7 @@ function addCityToList(){
     
     cityListEl.append(newListEl);
 
-    i++;
+    //*resets the search input and stores the list into the array
     citySearchInput.val("");
     localStorage.setItem("cityArray", JSON.stringify(cityArray));
     console.log(cityArray);
@@ -205,7 +190,7 @@ function getGeoCoding(cityEntered){
 
 //*this function gets the current city's weather and then displays it on the HTML
 function getCurrentCityWeather(latAndLonArray){
-
+    //*uses lat and lon to get the weather
     var requestURL = "https://api.openweathermap.org/data/2.5/weather?lat=" + latAndLonArray[0] + "&lon=" + latAndLonArray[1] + "&appid=509e23105bc9e70fb5c519f8f743f99f"
 
     fetch(requestURL)
@@ -222,6 +207,7 @@ function getCurrentCityWeather(latAndLonArray){
                 data.wind.speed
             ]
 
+            //*sets HTML elements depending on switch case
             for (var i = 0; i < dataArray.length; i++){
                 var listEl = $("<li>");
                 listEl.addClass("col");
@@ -265,7 +251,7 @@ function get5DayForecast(latAndLonArray){
         })
         .then(function(data){
 
-           
+           //*adds the weekly weather at 12PM for 5 days, and sets the html depending on the switch case
             var day = 1;
             for (var i = 5; i < 40; i+=8){
 
@@ -320,7 +306,6 @@ function get5DayForecast(latAndLonArray){
         })
 }
 
-//*this function gets the UV, and then puts it on the current weather forecast
 //*this only works by making it data/2.5 and not data/3.0
 function getCurrentCityUV(latAndLonArray){
 
@@ -331,14 +316,12 @@ function getCurrentCityUV(latAndLonArray){
             return response.json();
         })
         .then(function(data){
-
-            console.log("this was hit");
-            console.log(UVrequestURL);
+            //*sets the UV and gives it a background color depending on the value
 
             var uvSpan = $("<span>")
-                uvSpan.attr("style", "width: 10%; color: white;")
+                uvSpan.attr("style", "width: 10%;")
             var unListEl = $("<li>");
-            unListEl.addClass("col");
+            unListEl.addClass("col text-light");
                 uvSpan.text(data.current.uvi);
                     if (data.current.uvi < 2.1){
                         uvSpan.attr("style", "background-color: green;")
@@ -356,6 +339,7 @@ function getCurrentCityUV(latAndLonArray){
 
 }
 
+//*all data pulled is in kelvin for some reason
 function kelvinToFahrenheit(kelvin){
     return (9/5) * (kelvin - 273) + 32
 }
