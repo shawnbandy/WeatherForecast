@@ -19,6 +19,6 @@ This was accomplished by:
 
 Application Description: This program uses the open source APIs of OpenWeather to display a different types of weather information such as temperature, humidity, wind speed, UV index, and a weather condition icon. Today's weather, as well as the next 5 day forecast, is displayed for the city that was entered and submitted by the user. The city that was searched for is placed into a search history, where the user can click on that city name to redisplay the information. A reset button was included to clear the search history, and all data persists through refreshes through localstorage. 
 
-Link to Repo: https://github.com/shawnbandy/challenge6
+Link to Repo: https://github.com/shawnbandy/WeatherForecast/
 
-Link to Deployed application: https://shawnbandy.github.io/challenge6/
+Link to Deployed application: https://shawnbandy.github.io/WeatherForecast/
