@@ -22,3 +22,5 @@ Application Description: This program uses the open source APIs of OpenWeather t
 Link to Repo: https://github.com/shawnbandy/WeatherForecast/
 
 Link to Deployed application: https://shawnbandy.github.io/WeatherForecast/
+
+![image description](/assets/img/gif.gif)
