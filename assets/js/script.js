@@ -168,7 +168,7 @@ function addCityToList(){
 //*this function gets the latitude and longitude of the city entered, and then feeds that data into 3 more fetch requests that get the weather, UV, and forecast
 function getGeoCoding(cityEntered){
 
-    var geoCodingURL = "http://api.openweathermap.org/geo/1.0/direct?q=" + cityEntered + "%2C+US&limit=1&appid=9ec76b58d98312c57d26f7da072dd28c" 
+    var geoCodingURL = "https://api.openweathermap.org/geo/1.0/direct?q=" + cityEntered + "%2C+US&limit=1&appid=9ec76b58d98312c57d26f7da072dd28c" 
 
     fetch(geoCodingURL)
         .then(function(response){
@@ -221,7 +221,7 @@ function getCurrentCityWeather(latAndLonArray){
                 switch (i){
                     case 0:
                         var image = $("<img>")
-                        image.attr("src", "http://openweathermap.org/img/wn/" + data.weather[0].icon + "@2x.png");
+                        image.attr("src", "https://openweathermap.org/img/wn/" + data.weather[0].icon + "@2x.png");
                         listEl.append(image)
                         break;
                     case 1:
@@ -267,7 +267,7 @@ function get5DayForecast(latAndLonArray){
                     card.attr("style", "background-color: #C2DED1")
                 var cardImg = $("<img>");
                     cardImg.addClass("card-img-top");
-                    cardImg.attr("src", "http://openweathermap.org/img/wn/" + data.list[i].weather[0].icon + "@2x.png")
+                    cardImg.attr("src", "https://openweathermap.org/img/wn/" + data.list[i].weather[0].icon + "@2x.png")
                     cardImg.addClass("w-50 h-50")
                 var cardBody = $("<div>");
                     cardBody.addClass("card-body");
